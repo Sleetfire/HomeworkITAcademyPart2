@@ -20,13 +20,13 @@
     <p style="color: red">Пользователя с таким логином нет!</p>
 </c:if>
 
-<form action="/MK_JD2-88-2-0.0.0/message" method="post">
+<form action="${pageContext.request.contextPath}/message" method="post">
     <p><b>Получатель </b><input type="text" placeholder="Логин получателя" name="recipientLogin"></p>
     <p><b>Текст </b><input type="text" placeholder="Текст сообщения" name="text"></p>
     <p><input type="submit" value="Отправить"></p>
 </form>
 
-<p><input type="button" onclick="location.href='/MK_JD2-88-2-0.0.0/main'" value="На главную"></p>
+<p><input type="button" onclick="location.href='${pageContext.request.contextPath}/main'" value="На главную"></p>
 
 </body>
 </html>

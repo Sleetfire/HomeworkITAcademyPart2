@@ -6,41 +6,16 @@ import java.util.List;
 
 public interface IMessageService {
 
-    /**
-     * Adds message object in storage(List or Map)
-     * @param message message object
-     */
-    void createMessage(Message message);
+    void create(Message message);
 
-    /**
-     * Returns a list with all user messages
-     * @return list with user messages
-     */
-    List<Message> getAllMessages();
+    List<Message> getAll();
 
-    /**
-     * Returns a list with messages by sender
-     * @param login sender's login
-     * @return list with messages
-     */
-    List<Message> getMessagesBySenderLogin(String login);
+    List<Message> getBySenderLogin(String login);
 
-    /**
-     * Returns a list with messages by recipient
-     * @param login recipient's login
-     * @return list with messages
-     */
-    List<Message> getMessagesByRecipientLogin(String login);
+    List<Message> getByRecipientLogin(String login);
 
-    /**
-     * Returns the number of messages in storage
-     * @return number of messages
-     */
-    int getMessagesCount();
+    int getCount();
 
-    /**
-     * Deletes message from storage by user's login
-     * @param login user's login
-     */
-    void deleteMessagesByUserLogin(String login);
+    void deleteByUserLogin(String login);
+
 }

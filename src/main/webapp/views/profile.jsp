@@ -30,10 +30,10 @@
     </tr>
     <tr>
         <th width="33%">Удаление аккаунта</th>
-        <th width="33%"><input type="button" onclick="location.href='/MK_JD2-88-2-0.0.0/profile/delete'" value="Удалить"> </th>
+        <th width="33%"><input type="button" onclick="location.href='${pageContext.request.contextPath}/profile/delete'" value="Удалить"> </th>
     </tr>
 </table>
-<p><input type="button" onclick="location.href='/MK_JD2-88-2-0.0.0/main'" value="На главную"></p>
+<p><input type="button" onclick="location.href='${pageContext.request.contextPath}/main'" value="На главную"></p>
 
 </body>
 </html>

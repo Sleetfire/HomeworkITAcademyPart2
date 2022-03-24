@@ -16,18 +16,18 @@
 
 <c:if test="${user == null}">
     <h4 style="color: blue">Привет, кем бы ты ни был...</h4>
-    <p><input type="button" onclick="location.href='/MK_JD2-88-2-0.0.0/statistics'" value="Статистика"></p>
-    <p><input type="button" onclick="location.href='/MK_JD2-88-2-0.0.0/signUp'" value="Зарегистрироваться"></p>
-    <p><input type="button" onclick="location.href='/MK_JD2-88-2-0.0.0/signIn'" value="Войти"></p>
+    <p><input type="button" onclick="location.href='${pageContext.request.contextPath}/statistics'" value="Статистика"></p>
+    <p><input type="button" onclick="location.href='${pageContext.request.contextPath}/signUp'" value="Зарегистрироваться"></p>
+    <p><input type="button" onclick="location.href='${pageContext.request.contextPath}/signIn'" value="Войти"></p>
 </c:if>
 
 <c:if test="${user != null}">
     <h4 style="color: green">Привет, <c:out value="${user.login}"/>!</h4>
-    <p><input type="button" onclick="location.href='/MK_JD2-88-2-0.0.0/profile'" value="Профиль"></p>
-    <p><input type="button" onclick="location.href='/MK_JD2-88-2-0.0.0/message'" value="Написать сообщение"></p>
-    <p><input type="button" onclick="location.href='/MK_JD2-88-2-0.0.0/chats'" value="Посмотреть сообщения"></p>
-    <p><input type="button" onclick="location.href='/MK_JD2-88-2-0.0.0/statistics'" value="Статистика"></p>
-    <p><input type="button" onclick="location.href='/MK_JD2-88-2-0.0.0/leave'" value="Выйти"></p>
+    <p><input type="button" onclick="location.href='${pageContext.request.contextPath}/profile'" value="Профиль"></p>
+    <p><input type="button" onclick="location.href='${pageContext.request.contextPath}/message'" value="Написать сообщение"></p>
+    <p><input type="button" onclick="location.href='${pageContext.request.contextPath}/chats'" value="Посмотреть сообщения"></p>
+    <p><input type="button" onclick="location.href='${pageContext.request.contextPath}/statistics'" value="Статистика"></p>
+    <p><input type="button" onclick="location.href='${pageContext.request.contextPath}/leave'" value="Выйти"></p>
 </c:if>
 
 </body>

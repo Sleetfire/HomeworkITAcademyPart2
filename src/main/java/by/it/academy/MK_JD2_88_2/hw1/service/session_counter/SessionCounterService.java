@@ -1,15 +1,15 @@
-package by.it.academy.MK_JD2_88_2.hw1.session_counter;
+package by.it.academy.MK_JD2_88_2.hw1.service.session_counter;
 
-import by.it.academy.MK_JD2_88_2.hw1.session_counter.api.ISessionCounter;
+import by.it.academy.MK_JD2_88_2.hw1.service.session_counter.api.ISessionCounterService;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class SessionCounter implements ISessionCounter {
+public class SessionCounterService implements ISessionCounterService {
 
-    private static final ISessionCounter instance = new SessionCounter();
+    private static final ISessionCounterService instance = new SessionCounterService();
     private AtomicInteger counter = new AtomicInteger(0);
 
-    private SessionCounter() {
+    private SessionCounterService() {
     }
 
     @Override
@@ -27,7 +27,7 @@ public class SessionCounter implements ISessionCounter {
         this.counter.decrementAndGet();
     }
 
-    public static ISessionCounter getInstance() {
+    public static ISessionCounterService getInstance() {
         return instance;
     }
 

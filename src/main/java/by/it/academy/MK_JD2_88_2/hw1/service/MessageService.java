@@ -2,53 +2,47 @@ package by.it.academy.MK_JD2_88_2.hw1.service;
 
 import by.it.academy.MK_JD2_88_2.hw1.dto.Message;
 import by.it.academy.MK_JD2_88_2.hw1.service.api.IMessageService;
+import by.it.academy.MK_JD2_88_2.hw1.storage.api.ChoiceFactoryStorage;
+import by.it.academy.MK_JD2_88_2.hw1.storage.api.IMessageStorage;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class MessageService implements IMessageService {
 
     private static final IMessageService instance = new MessageService();
-    private final Map<String, List<Message>> messagesMap = new HashMap<>();
+    private final IMessageStorage storage = ChoiceFactoryStorage.getInstance().getMessageStorage();
 
     private MessageService() {
     }
 
     @Override
-    public void createMessage(Message message) {
-        String login = message.getRecipientLogin();
-        List<Message> messages = this.messagesMap.getOrDefault(login, new ArrayList<>());
-        messages.add(message);
-        this.messagesMap.put(login, messages);
+    public void create(Message message) {
+       this.storage.add(message);
     }
 
     @Override
-    public List<Message> getAllMessages() {
-        List<Message> messages = new ArrayList<>();
-        this.messagesMap.values().forEach(messages::addAll);
-        return Collections.unmodifiableList(messages);
+    public List<Message> getAll() {
+        return this.storage.getAll();
     }
 
     @Override
-    public List<Message> getMessagesBySenderLogin(String login) {
-        return getAllMessages().stream()
-                .filter(message -> Objects.equals(message.getSenderLogin(), login))
-                .collect(Collectors.toList());
+    public List<Message> getBySenderLogin(String login) {
+       return this.storage.getBySenderLogin(login);
     }
 
     @Override
-    public List<Message> getMessagesByRecipientLogin(String login) {
-        return this.messagesMap.get(login);
+    public List<Message> getByRecipientLogin(String login) {
+        return this.storage.getByRecipientLogin(login);
     }
 
     @Override
-    public int getMessagesCount() {
-        return getAllMessages().size();
+    public int getCount() {
+        return this.storage.getCount();
     }
 
     @Override
-    public void deleteMessagesByUserLogin(String login) {
-        this.messagesMap.remove(login);
+    public void deleteByUserLogin(String login) {
+        this.storage.delete(login);
     }
 
     public static IMessageService getInstance() {

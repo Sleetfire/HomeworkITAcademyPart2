@@ -5,10 +5,21 @@ import java.util.Objects;
 
 public class Message {
 
+    private Long id;
     private String senderLogin;
     private String recipientLogin;
     private String text;
     private LocalDateTime dateTime;
+    private User author;
+    private User user;
+
+    public Message(Long id, String senderLogin, String recipientLogin, String text, LocalDateTime dateTime) {
+        this.id = id;
+        this.senderLogin = senderLogin;
+        this.recipientLogin = recipientLogin;
+        this.text = text;
+        this.dateTime = dateTime;
+    }
 
     public Message(String senderLogin, String recipientLogin, String text, LocalDateTime dateTime) {
         this.senderLogin = senderLogin;
@@ -17,8 +28,26 @@ public class Message {
         this.dateTime = dateTime;
     }
 
+    private Message(Long id, String senderLogin, String recipientLogin, String text, LocalDateTime dateTime, User author, User user) {
+        this.id = id;
+        this.senderLogin = senderLogin;
+        this.recipientLogin = recipientLogin;
+        this.text = text;
+        this.dateTime = dateTime;
+        this.author = author;
+        this.user = user;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getSenderLogin() {
-        return this.senderLogin;
+        return senderLogin;
     }
 
     public void setSenderLogin(String senderLogin) {
@@ -26,7 +55,7 @@ public class Message {
     }
 
     public String getRecipientLogin() {
-        return this.recipientLogin;
+        return recipientLogin;
     }
 
     public void setRecipientLogin(String recipientLogin) {
@@ -34,7 +63,7 @@ public class Message {
     }
 
     public String getText() {
-        return this.text;
+        return text;
     }
 
     public void setText(String text) {
@@ -42,11 +71,27 @@ public class Message {
     }
 
     public LocalDateTime getDateTime() {
-        return this.dateTime;
+        return dateTime;
     }
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -54,27 +99,85 @@ public class Message {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Message message = (Message) o;
-        return Objects.equals(this.senderLogin, message.senderLogin)
-                && Objects.equals(this.recipientLogin, message.recipientLogin) && Objects.equals(this.text, message.text)
-                && Objects.equals(this.dateTime, message.dateTime);
+        return Objects.equals(senderLogin, message.senderLogin)
+                && Objects.equals(id, message.id)
+                && Objects.equals(recipientLogin, message.recipientLogin)
+                && Objects.equals(text, message.text)
+                && Objects.equals(dateTime, message.dateTime)
+                && Objects.equals(author, message.author)
+                && Objects.equals(user, message.user);
     }
 
     @Override
     public int hashCode() {
-        int result = 31 * this.senderLogin.hashCode();
-        result += 31 * this.recipientLogin.hashCode();
-        result += 31 * this.text.hashCode();
-        result += this.dateTime.hashCode();
-        return result;
+        return Objects.hash(senderLogin, recipientLogin, text, dateTime, id, author, user);
     }
 
     @Override
     public String toString() {
         return "Message{" +
-                "senderLogin='" + this.senderLogin + '\'' +
-                ", recipientLogin='" + this.recipientLogin + '\'' +
-                ", text='" + this.text + '\'' +
-                ", dateTime=" + this.dateTime +
+                "id=" + id +
+                ", senderLogin='" + senderLogin + '\'' +
+                ", recipientLogin='" + recipientLogin + '\'' +
+                ", text='" + text + '\'' +
+                ", dateTime=" + dateTime +
                 '}';
     }
+
+    public static class Builder {
+        private Long id;
+        private String senderLogin;
+        private String recipientLogin;
+        private String text;
+        private LocalDateTime dateTime;
+        private User author;
+        private User user;
+
+        private Builder() {
+        }
+
+        public static Builder createBuilder() {
+            return new Builder();
+        }
+
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setSenderLogin(String senderLogin) {
+            this.senderLogin = senderLogin;
+            return this;
+        }
+
+        public Builder setRecipientLogin(String recipientLogin) {
+            this.recipientLogin = recipientLogin;
+            return this;
+        }
+
+        public Builder setText(String text) {
+            this.text = text;
+            return this;
+        }
+
+        public Builder setDateTime(LocalDateTime dateTime) {
+            this.dateTime = dateTime;
+            return this;
+        }
+
+        public Builder setAuthor(User author) {
+            this.author = author;
+            return this;
+        }
+
+        public Builder setUser(User user) {
+            this.user = user;
+            return this;
+        }
+
+        public Message build() {
+            return new Message(id, senderLogin, recipientLogin, text, dateTime, author, user);
+        }
+    }
+
 }

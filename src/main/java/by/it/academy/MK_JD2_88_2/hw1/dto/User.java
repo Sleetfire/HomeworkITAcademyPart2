@@ -1,24 +1,44 @@
 package by.it.academy.MK_JD2_88_2.hw1.dto;
 
 import java.time.LocalDate;
-import java.util.Objects;
+import java.util.*;
 
 public class User {
 
+    private Long id;
     private String login;
     private String password;
     private String name;
+    private LocalDate rgDate;
     private LocalDate birthday;
 
-    public User(String login, String password, String name, LocalDate birthday) {
+    public User(Long id, String login, String password, String name, LocalDate rgDate, LocalDate birthday) {
+        this.id = id;
         this.login = login;
         this.password = password;
         this.name = name;
+        this.rgDate = rgDate;
         this.birthday = birthday;
     }
 
+    public User(String login, String password, String name, LocalDate rgDate, LocalDate birthday) {
+        this.login = login;
+        this.password = password;
+        this.name = name;
+        this.rgDate = rgDate;
+        this.birthday = birthday;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getLogin() {
-        return this.login;
+        return login;
     }
 
     public void setLogin(String login) {
@@ -26,7 +46,7 @@ public class User {
     }
 
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
     public void setPassword(String password) {
@@ -34,15 +54,23 @@ public class User {
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    public LocalDate getRgDate() {
+        return rgDate;
+    }
+
+    public void setRgDate(LocalDate rgDate) {
+        this.rgDate = rgDate;
+    }
+
     public LocalDate getBirthday() {
-        return this.birthday;
+        return birthday;
     }
 
     public void setBirthday(LocalDate birthday) {
@@ -54,26 +82,78 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(this.login, user.login) && Objects.equals(this.name, user.name)
-                && Objects.equals(this.birthday, user.birthday) && Objects.equals(this.password, user.password);
+        return Objects.equals(login, user.login)
+                && Objects.equals(id, user.id)
+                && Objects.equals(password, user.password)
+                && Objects.equals(name, user.name)
+                && Objects.equals(rgDate, user.rgDate)
+                && Objects.equals(birthday, user.birthday);
     }
 
     @Override
     public int hashCode() {
-        int result = 31 * this.login.hashCode();
-        result += this.password.hashCode();
-        result += this.name.hashCode();
-        result += this.birthday.hashCode();
-    return result;
+        return Objects.hash(login, password, name, rgDate, birthday, id);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "login='" + this.login + '\'' +
-                ", name='" + this.name + '\'' +
-                ", birthday=" + this.birthday +
-                ", password='" + this.password + '\'' +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", rgDate=" + rgDate +
+                ", birthday=" + birthday +
                 '}';
+    }
+
+    public static class Builder {
+        private Long id;
+        private String login;
+        private String password;
+        private String name;
+        private LocalDate rgDate;
+        private LocalDate birthday;
+
+        private Builder() {
+        }
+
+        public static Builder createBuilder() {
+            return new Builder();
+        }
+
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setLogin(String login) {
+            this.login = login;
+            return this;
+        }
+
+        public Builder setPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setRgDate(LocalDate rgDate) {
+            this.rgDate = rgDate;
+            return this;
+        }
+
+        public Builder setBirthday(LocalDate birthday) {
+            this.birthday = birthday;
+            return this;
+        }
+
+        public User build() {
+            return new User(this.id, this.login, this.password, this.name, this.rgDate, this.birthday);
+        }
     }
 }

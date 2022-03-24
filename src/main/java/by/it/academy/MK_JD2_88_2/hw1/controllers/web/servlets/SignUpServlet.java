@@ -45,14 +45,14 @@ public class SignUpServlet extends HttpServlet {
             req.getRequestDispatcher(this.signUpPageUrl).forward(req, resp);
         } else {
             LocalDate birthday = LocalDate.parse(strBirthday);
-            User user = new User(login, password, name, birthday);
-            this.service.createUser(user);
-            req.getRequestDispatcher("/views/mainPage.jsp").forward(req, resp);
+            User user = new User(login, password, name, LocalDate.now(), birthday);
+            this.service.create(user);
+            resp.sendRedirect( req.getContextPath() + "/main");
         }
     }
 
     private boolean isUserCreated(String login) {
-        User user = this.service.getUserByLogin(login);
+        User user = this.service.getByLogin(login);
         return user != null;
     }
 }

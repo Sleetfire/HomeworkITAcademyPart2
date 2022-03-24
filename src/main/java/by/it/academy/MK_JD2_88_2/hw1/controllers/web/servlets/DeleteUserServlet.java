@@ -31,9 +31,9 @@ public class DeleteUserServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
         String login = user.getLogin();
 
-        this.userService.deleteUserByLogin(login);
-        this.messageService.deleteMessagesByUserLogin(login);
+        this.userService.deleteByLogin(login);
+        this.messageService.deleteByUserLogin(login);
         session.removeAttribute("user");
-        resp.sendRedirect("/MK_JD2-88-2-0.0.0/leave");
+        resp.sendRedirect( req.getContextPath() + "/leave");
     }
 }

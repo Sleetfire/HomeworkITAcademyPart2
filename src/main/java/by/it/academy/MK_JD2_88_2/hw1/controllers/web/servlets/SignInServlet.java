@@ -1,6 +1,5 @@
 package by.it.academy.MK_JD2_88_2.hw1.controllers.web.servlets;
 
-import by.it.academy.MK_JD2_88_2.hw1.dto.User;
 import by.it.academy.MK_JD2_88_2.hw1.service.UserService;
 import by.it.academy.MK_JD2_88_2.hw1.service.api.IUserService;
 
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Objects;
 
 @WebServlet(name = "SignInServlet", urlPatterns = "/signIn")
 public class SignInServlet extends HttpServlet {
@@ -35,13 +33,11 @@ public class SignInServlet extends HttpServlet {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
 
-        User user = this.service.getUserByLogin(login);
-        if (user != null) {
-            String userPassword = user.getPassword();
-            if (Objects.equals(userPassword, password)) {
+        if (this.service.isExist(login)) {
+            if (this.service.checkPassword(login, password)) {
                 HttpSession session = req.getSession();
-                session.setAttribute("user", user);
-                req.getRequestDispatcher("/views/mainPage.jsp").forward(req, resp);
+                session.setAttribute("user", service.getByLogin(login));
+                resp.sendRedirect( req.getContextPath() + "/main");
             } else {
                 req.setAttribute("wrongPassword", true);
                 req.getRequestDispatcher(this.signInFilePath).forward(req, resp);

@@ -24,13 +24,13 @@
     <p style="color: red">Заполните все поля формы регистрации!</p>
 </c:if>
 
-<form action="/MK_JD2-88-2-0.0.0/signUp" method="post">
+<form action="${pageContext.request.contextPath}/signUp" method="post">
     <p><b>Логин</b> <input type="text" placeholder="Логин пользователя" name="login"></p>
     <p><b>Пароль</b> <input type="password" placeholder="Пароль" name="password"></p>
     <p><b>ФИО</b> <input type="text" placeholder="ФИО пользователя" name="name"></p>
     <p><b>Дата рождения</b> <input type="date", placeholder="Дата рождения" name="birthday"></p>
     <p><input type="submit" value="Зарегистрироваться"></p>
-    <p><input type="button" onclick="location.href='/MK_JD2-88-2-0.0.0/main'" value="На главную"></p>
+    <p><input type="button" onclick="location.href='${pageContext.request.contextPath}/main'" value="На главную"></p>
 </form>
 
 </body>

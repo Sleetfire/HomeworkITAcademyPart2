@@ -46,7 +46,7 @@
     </c:forEach>
 </table>
 
-<p><input type="button" onclick="location.href='/MK_JD2-88-2-0.0.0/main'" value="На главную"></p>
+<p><input type="button" onclick="location.href='${pageContext.request.contextPath}/main'" value="На главную"></p>
 
 </body>
 </html>

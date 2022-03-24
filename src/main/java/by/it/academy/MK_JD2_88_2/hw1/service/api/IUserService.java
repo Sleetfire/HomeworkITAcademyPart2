@@ -6,34 +6,18 @@ import java.util.List;
 
 public interface IUserService {
 
-    /**
-     * Adds user in the storage (List or Map)
-     * @param user user object
-     */
-    void createUser(User user);
+    void create(User user);
 
-    /**
-     * Returns the list of all users from storage
-     * @return the list of all users
-     */
-    List<User> getUsers();
+    List<User> getAll();
 
-    /**
-     * Returns user from storage by login
-     * @param login user's login
-     * @return
-     */
-    User getUserByLogin(String login);
+    User getByLogin(String login);
 
-    /**
-     * Returns the number of  the users
-     * @return number of users
-     */
-    int getUserCount();
+    int getCount();
 
-    /**
-     * Deletes user from storage
-     * @param login user's login
-     */
-    void deleteUserByLogin(String login);
+    void deleteByLogin(String login);
+
+    boolean checkPassword(String login, String password);
+
+    boolean isExist(String login);
+
 }

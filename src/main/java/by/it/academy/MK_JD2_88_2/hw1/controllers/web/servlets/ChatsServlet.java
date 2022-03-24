@@ -26,8 +26,8 @@ public class ChatsServlet extends HttpServlet {
         User user =(User) session.getAttribute("user");
         String userLogin = user.getLogin();
 
-        List<Message> receivedMessages = this.service.getMessagesByRecipientLogin(userLogin);
-        List<Message> sentMessages = this.service.getMessagesBySenderLogin(userLogin);
+        List<Message> receivedMessages = this.service.getByRecipientLogin(userLogin);
+        List<Message> sentMessages = this.service.getBySenderLogin(userLogin);
 
         req.setAttribute("receivedMessages", receivedMessages);
         req.setAttribute("sentMessages", sentMessages);
