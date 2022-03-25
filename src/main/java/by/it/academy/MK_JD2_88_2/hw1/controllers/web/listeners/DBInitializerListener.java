@@ -23,7 +23,7 @@ public class DBInitializerListener implements ServletContextListener {
             this.hibernateDBInitializer.close();
             this.initializer.close();
         } catch (Exception e) {
-            throw new RuntimeException("Ошибка закрытия инициализатора hibernate", e);
+            throw new RuntimeException("Ошибка закрытия инициализатора hibernate или jdbc", e);
         }
     }
 }

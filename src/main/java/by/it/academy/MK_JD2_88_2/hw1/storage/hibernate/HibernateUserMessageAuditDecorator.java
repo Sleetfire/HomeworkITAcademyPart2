@@ -11,13 +11,15 @@ import java.util.List;
 
 public class HibernateUserMessageAuditDecorator implements IUserStorage {
 
-    private final IUserStorage userStorage = HibernateUserStorage.getInstance();
-    private final IMessageStorage messageStorage = HibernateMessageStorage.getInstance();
-    private final IAuditUserStorage auditUserStorage = HibernateAuditUserStorage.getInstance();
-    private static IUserStorage instance = new HibernateUserMessageAuditDecorator();
+    private final IUserStorage userStorage;
+    private final IMessageStorage messageStorage;
+    private final IAuditUserStorage auditUserStorage;
+    private static final IUserStorage instance = new HibernateUserMessageAuditDecorator();
 
     private HibernateUserMessageAuditDecorator() {
-
+        this.userStorage = HibernateUserStorage.getInstance();
+        this.messageStorage = HibernateMessageStorage.getInstance();
+        this.auditUserStorage = HibernateAuditUserStorage.getInstance();
     }
 
     @Override

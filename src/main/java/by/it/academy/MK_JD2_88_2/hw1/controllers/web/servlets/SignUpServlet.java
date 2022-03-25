@@ -40,7 +40,7 @@ public class SignUpServlet extends HttpServlet {
             req.setAttribute("emptyFormField", true);
             req.getRequestDispatcher(this.signUpPageUrl).forward(req, resp);
         }
-        if (isUserCreated(login)) {
+        if (this.service.isExist(login)) {
             req.setAttribute("userCreated", true);
             req.getRequestDispatcher(this.signUpPageUrl).forward(req, resp);
         } else {
@@ -49,10 +49,5 @@ public class SignUpServlet extends HttpServlet {
             this.service.create(user);
             resp.sendRedirect( req.getContextPath() + "/main");
         }
-    }
-
-    private boolean isUserCreated(String login) {
-        User user = this.service.getByLogin(login);
-        return user != null;
     }
 }

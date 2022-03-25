@@ -11,13 +11,15 @@ import java.util.List;
 
 public class DBUserMessageAuditStorageDecorator implements IUserStorage {
 
-    private final IUserStorage userStorage = DBUserStorage.getInstance();
-    private final IMessageStorage messageStorage = DBMessageStorage.getInstance();
-    private final IAuditUserStorage auditUserStorage = DBAuditUserStorage.getInstance();
+    private final IUserStorage userStorage;
+    private final IMessageStorage messageStorage;
+    private final IAuditUserStorage auditUserStorage;
     private static final IUserStorage instance = new DBUserMessageAuditStorageDecorator();
 
     private DBUserMessageAuditStorageDecorator() {
-
+        this.userStorage = DBUserStorage.getInstance();
+        this.messageStorage  = DBMessageStorage.getInstance();
+        this.auditUserStorage = DBAuditUserStorage.getInstance();
     }
 
     @Override
