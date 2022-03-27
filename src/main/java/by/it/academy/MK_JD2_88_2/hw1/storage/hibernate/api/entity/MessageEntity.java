@@ -21,13 +21,11 @@ public class MessageEntity {
     @Column(name = "date_time")
     private LocalDateTime dateTime;
 
-
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(nullable = false)
     private UserEntity user;
 
     public MessageEntity() {
-
     }
 
     private MessageEntity(Long id, String senderLogin, String recipientLogin, String text, LocalDateTime dateTime, UserEntity user) {

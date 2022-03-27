@@ -15,7 +15,7 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HibernateUserStorage implements IUserStorage, AutoCloseable {
+public class HibernateUserStorage implements IUserStorage {
 
     private static IUserStorage instance = new HibernateUserStorage();
     private final HibernateDBInitializer dbInitializer;
@@ -94,11 +94,6 @@ public class HibernateUserStorage implements IUserStorage, AutoCloseable {
         entityManager.createQuery(criteriaDelete).executeUpdate();
         entityManager.getTransaction().commit();
         entityManager.close();
-    }
-
-    @Override
-    public void close() throws Exception {
-        this.dbInitializer.close();
     }
 
     public static IUserStorage getInstance() {

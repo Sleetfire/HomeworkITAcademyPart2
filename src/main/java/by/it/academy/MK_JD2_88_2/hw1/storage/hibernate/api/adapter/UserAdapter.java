@@ -16,7 +16,8 @@ public class UserAdapter implements IEntityDTOAdapter<UserEntity, User> {
                 .setPassword(object.getPassword())
                 .setName(object.getName())
                 .setBirthday(object.getBirthday())
-                .setRgDate(object.getRgDate()).build();
+                .setRgDate(object.getRgDate())
+                .build();
     }
 
     @Override
@@ -30,6 +31,7 @@ public class UserAdapter implements IEntityDTOAdapter<UserEntity, User> {
                 .setPassword(object.getPassword())
                 .setName(object.getName())
                 .setBirthday(object.getBirthday())
-                .setRgDate(object.getRgDate()).build();
+                .setRgDate(object.getRgDate())
+                .build();
     }
 }

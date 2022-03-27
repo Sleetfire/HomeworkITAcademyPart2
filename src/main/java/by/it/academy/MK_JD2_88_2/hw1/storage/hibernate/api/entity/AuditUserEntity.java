@@ -18,11 +18,11 @@ public class AuditUserEntity {
     private String text;
 
     @ManyToOne
-    @JoinColumn(name = "author_id", nullable = true)
+    @JoinColumn
     private UserEntity author;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(nullable = false)
     private UserEntity user;
 
     public AuditUserEntity(Long id, LocalDateTime dtCreate, String text, UserEntity author, UserEntity user) {

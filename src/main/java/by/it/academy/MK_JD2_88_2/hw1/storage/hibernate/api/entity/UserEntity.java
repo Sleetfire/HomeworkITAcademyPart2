@@ -23,15 +23,6 @@ public class UserEntity {
     @Column(name = "birthday")
     private LocalDate birthday;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<MessageEntity> messages = new HashSet<>();
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<AuditUserEntity> userAudits = new ArrayList<>();
-
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-    private List<AuditUserEntity> authorAudits = new ArrayList<>();
-
     private UserEntity(Long id, String login, String password, String name, LocalDate rgDate, LocalDate birthday) {
         this.id = id;
         this.login = login;
@@ -92,30 +83,6 @@ public class UserEntity {
         this.birthday = birthday;
     }
 
-    public Set<MessageEntity> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(Set<MessageEntity> messages) {
-        this.messages = messages;
-    }
-
-    public List<AuditUserEntity> getUserAudits() {
-        return userAudits;
-    }
-
-    public void setUserAudits(List<AuditUserEntity> userAudits) {
-        this.userAudits = userAudits;
-    }
-
-    public List<AuditUserEntity> getAuthorAudits() {
-        return authorAudits;
-    }
-
-    public void setAuthorAudits(List<AuditUserEntity> authorAudits) {
-        this.authorAudits = authorAudits;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -126,15 +93,12 @@ public class UserEntity {
                 && Objects.equals(password, user.password)
                 && Objects.equals(name, user.name)
                 && Objects.equals(rgDate, user.rgDate)
-                && Objects.equals(birthday, user.birthday)
-                && Objects.equals(messages, user.messages)
-                && Objects.equals(userAudits, user.userAudits)
-                && Objects.equals(authorAudits, user.authorAudits);
+                && Objects.equals(birthday, user.birthday);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(login, password, name, rgDate, birthday, id, messages, userAudits, authorAudits);
+        return Objects.hash(login, password, name, rgDate, birthday, id);
     }
 
     @Override
@@ -146,9 +110,6 @@ public class UserEntity {
                 ", name='" + name + '\'' +
                 ", rgDate=" + rgDate +
                 ", birthday=" + birthday +
-                ", messages=" + messages +
-                ", userAudits=" + userAudits +
-                ", authorAudits=" + authorAudits +
                 '}';
     }
 
@@ -159,7 +120,6 @@ public class UserEntity {
         private String name;
         private LocalDate rgDate;
         private LocalDate birthday;
-
 
         private Builder() {
         }
