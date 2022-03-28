@@ -21,11 +21,10 @@ public class MessageAdapter implements IEntityDTOAdapter<MessageEntity, Message>
         }
         return Message.Builder.createBuilder()
                 .setId(object.getId())
-                .setSenderLogin(object.getSenderLogin())
-                .setRecipientLogin(object.getRecipientLogin())
                 .setText(object.getText())
                 .setDateTime(object.getDateTime())
-                .setUser(this.userAdapter.entityToDTO(object.getUser()))
+                .setSender(this.userAdapter.entityToDTO(object.getRecipient()))
+                .setRecipient(this.userAdapter.entityToDTO(object.getRecipient()))
                 .build();
     }
 
@@ -36,11 +35,10 @@ public class MessageAdapter implements IEntityDTOAdapter<MessageEntity, Message>
         }
         return MessageEntity.Builder.createBuilder()
                 .setId(object.getId())
-                .setSenderLogin(object.getSenderLogin())
-                .setRecipientLogin(object.getRecipientLogin())
                 .setText(object.getText())
                 .setDateTime(object.getDateTime())
-                .setUser(this.userAdapter.dtoToEntity(object.getUser()))
+                .setSender(this.userAdapter.dtoToEntity(object.getSender()))
+                .setRecipient(this.userAdapter.dtoToEntity(object.getRecipient()))
                 .build();
     }
 }

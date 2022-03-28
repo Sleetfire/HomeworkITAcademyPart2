@@ -42,12 +42,12 @@ public class HibernateMessageStorage implements IMessageStorage {
 
     @Override
     public List<Message> getBySenderLogin(String login) {
-        return getByLogin(login, "senderLogin");
+        return getByLogin(login, "sender");
     }
 
     @Override
     public List<Message> getByRecipientLogin(String login) {
-      return getByLogin(login, "recipientLogin");
+      return getByLogin(login, "recipient");
     }
 
     @Override
@@ -69,7 +69,7 @@ public class HibernateMessageStorage implements IMessageStorage {
         CriteriaDelete<MessageEntity> criteriaDelete = cb.createCriteriaDelete(MessageEntity.class);
         Root<MessageEntity> root = criteriaDelete.from(MessageEntity.class);
         criteriaDelete.where(
-                cb.equal(root.get("senderLogin"), login)
+                cb.equal(root.get("sender").get("login"), login)
         );
         entityManager.getTransaction().begin();
         entityManager.createQuery(criteriaDelete).executeUpdate();
@@ -87,7 +87,7 @@ public class HibernateMessageStorage implements IMessageStorage {
             query.select(root);
         } else {
             query.select(root).where(
-                    cb.equal(root.get(fieldName), login)
+                    cb.equal(root.get(fieldName).get("login"), login)
             );
         }
 

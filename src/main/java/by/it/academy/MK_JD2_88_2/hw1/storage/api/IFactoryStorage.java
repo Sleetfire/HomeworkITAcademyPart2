@@ -8,5 +8,4 @@ public interface IFactoryStorage {
 
     IAuditUserStorage getAuditUserStorage();
 
-
 }

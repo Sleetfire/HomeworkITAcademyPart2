@@ -39,19 +39,19 @@ public class MessageServlet extends HttpServlet {
         HttpSession session = req.getSession();
         User sender = (User) session.getAttribute("user");
 
-        String senderLogin = sender.getLogin();
         String recipientLogin = req.getParameter("recipientLogin");
         String text = req.getParameter("text");
 
-        User recipientUser = userService.getByLogin(recipientLogin);
+        User recipient = userService.getByLogin(recipientLogin);
 
-        if (recipientUser != null) {
+        if (recipient != null) {
             Message message = Message.Builder.createBuilder()
-                    .setSenderLogin(senderLogin)
-                    .setRecipientLogin(recipientLogin)
                     .setText(text)
                     .setDateTime(LocalDateTime.now())
-                    .setUser(sender).build();
+                    .setRecipient(sender)
+                    .setSender(sender)
+                    .setRecipient(recipient)
+                    .build();
             this.service.create(message);
         } else {
             req.setAttribute("wrongRecipientLogin", true);

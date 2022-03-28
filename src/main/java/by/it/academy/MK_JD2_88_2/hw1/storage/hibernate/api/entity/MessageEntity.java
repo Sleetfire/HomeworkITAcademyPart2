@@ -12,10 +12,6 @@ public class MessageEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
-    @Column(name = "sender_login")
-    private String senderLogin;
-    @Column(name = "recipient_login")
-    private String recipientLogin;
     @Column(name = "text")
     private String text;
     @Column(name = "date_time")
@@ -23,18 +19,21 @@ public class MessageEntity {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private UserEntity user;
+    private UserEntity sender;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private UserEntity recipient;
 
     public MessageEntity() {
     }
 
-    private MessageEntity(Long id, String senderLogin, String recipientLogin, String text, LocalDateTime dateTime, UserEntity user) {
+    private MessageEntity(Long id, String text, LocalDateTime dateTime, UserEntity user, UserEntity author) {
         this.id = id;
-        this.senderLogin = senderLogin;
-        this.recipientLogin = recipientLogin;
         this.text = text;
         this.dateTime = dateTime;
-        this.user = user;
+        this.sender = user;
+        this.recipient = author;
     }
 
     public Long getId() {
@@ -43,22 +42,6 @@ public class MessageEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getSenderLogin() {
-        return senderLogin;
-    }
-
-    public void setSenderLogin(String senderLogin) {
-        this.senderLogin = senderLogin;
-    }
-
-    public String getRecipientLogin() {
-        return recipientLogin;
-    }
-
-    public void setRecipientLogin(String recipientLogin) {
-        this.recipientLogin = recipientLogin;
     }
 
     public String getText() {
@@ -77,51 +60,44 @@ public class MessageEntity {
         this.dateTime = dateTime;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public UserEntity getSender() {
+        return sender;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public void setSender(UserEntity user) {
+        this.sender = user;
+    }
+
+    public UserEntity getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(UserEntity author) {
+        this.recipient = author;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MessageEntity message = (MessageEntity) o;
-        return Objects.equals(senderLogin, message.senderLogin)
-                && Objects.equals(id, message.id)
-                && Objects.equals(recipientLogin, message.recipientLogin)
-                && Objects.equals(text, message.text)
-                && Objects.equals(dateTime, message.dateTime)
-                && Objects.equals(user, message.user);
+        MessageEntity that = (MessageEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(text, that.text)
+                && Objects.equals(dateTime, that.dateTime)
+                && Objects.equals(sender, that.sender)
+                && Objects.equals(recipient, that.recipient);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(senderLogin, recipientLogin, text, dateTime, id, user);
-    }
-
-    @Override
-    public String toString() {
-        return "Message{" +
-                "id=" + id +
-                ", senderLogin='" + senderLogin + '\'' +
-                ", recipientLogin='" + recipientLogin + '\'' +
-                ", text='" + text + '\'' +
-                ", dateTime=" + dateTime +
-                ", user=" + user +
-                '}';
+        return Objects.hash(id, text, dateTime, sender, recipient);
     }
 
     public static class Builder {
         private Long id;
-        private String senderLogin;
-        private String recipientLogin;
         private String text;
         private LocalDateTime dateTime;
-        private UserEntity user;
+        private UserEntity sender;
+        private UserEntity recipient;
 
         private Builder() {
         }
@@ -135,16 +111,6 @@ public class MessageEntity {
             return this;
         }
 
-        public Builder setSenderLogin(String senderLogin) {
-            this.senderLogin = senderLogin;
-            return this;
-        }
-
-        public Builder setRecipientLogin(String recipientLogin) {
-            this.recipientLogin = recipientLogin;
-            return this;
-        }
-
         public Builder setText(String text) {
             this.text = text;
             return this;
@@ -155,13 +121,18 @@ public class MessageEntity {
             return this;
         }
 
-        public Builder setUser(UserEntity user) {
-            this.user = user;
+        public Builder setSender(UserEntity sender) {
+            this.sender = sender;
+            return this;
+        }
+
+        public Builder setRecipient(UserEntity recipient) {
+            this.recipient = recipient;
             return this;
         }
 
         public MessageEntity build() {
-            return new MessageEntity(id, senderLogin, recipientLogin, text, dateTime, user);
+            return new MessageEntity(id, text, dateTime, sender, recipient);
         }
     }
 }

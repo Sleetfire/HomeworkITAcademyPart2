@@ -17,7 +17,7 @@ public class MessageStorage implements IMessageStorage {
 
     @Override
     public void add(Message message) {
-        String login = message.getRecipientLogin();
+        String login = message.getSender().getLogin();
         List<Message> messages = this.messagesMap.getOrDefault(login, new ArrayList<>());
         messages.add(message);
         this.messagesMap.put(login, messages);
@@ -33,7 +33,7 @@ public class MessageStorage implements IMessageStorage {
     @Override
     public List<Message> getBySenderLogin(String login) {
         return getAll().stream()
-                .filter(message -> Objects.equals(message.getSenderLogin(), login))
+                .filter(message -> Objects.equals(message.getSender().getLogin(), login))
                 .collect(Collectors.toList());
     }
 

@@ -23,7 +23,7 @@
     </tr>
     <c:forEach var="receivedMessage" items="${receivedMessages}">
         <tr>
-            <td width="20%"> ${receivedMessage.senderLogin} </td>
+            <td width="20%"> ${receivedMessage.sender.login} </td>
             <td width="20%"> ${receivedMessage.dateTime} </td>
             <td width="60%"> ${receivedMessage.text} </td>
         </tr>
@@ -39,7 +39,7 @@
     </tr>
     <c:forEach var="sentMessage" items="${sentMessages}">
         <tr>
-            <td width="20%"> ${sentMessage.recipientLogin} </td>
+            <td width="20%"> ${sentMessage.recipient.login} </td>
             <td width="20%"> ${sentMessage.dateTime} </td>
             <td width="60%"> ${sentMessage.text} </td>
         </tr>

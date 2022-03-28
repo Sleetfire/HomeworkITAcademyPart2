@@ -9,10 +9,23 @@ import java.util.List;
 
 public interface IAuditUserStorage {
 
+    /**
+     * Creating an audit
+     * @param audit
+     */
     void create(AuditUser audit);
 
+    /**
+     * Reading audits
+     * @param pageable
+     * @return list of audits
+     */
     List<AuditUser> read(Pageable pageable);
 
+    /**
+     * Deleting audit by user
+     * @param user
+     */
     void deleteByUser(User user);
 
 }

@@ -6,36 +6,17 @@ import java.util.Objects;
 public class Message {
 
     private Long id;
-    private String senderLogin;
-    private String recipientLogin;
     private String text;
     private LocalDateTime dateTime;
-    private User author;
-    private User user;
+    private User sender;
+    private User recipient;
 
-    public Message(Long id, String senderLogin, String recipientLogin, String text, LocalDateTime dateTime) {
+    private Message(Long id, String text, LocalDateTime dateTime, User user, User author) {
         this.id = id;
-        this.senderLogin = senderLogin;
-        this.recipientLogin = recipientLogin;
         this.text = text;
         this.dateTime = dateTime;
-    }
-
-    public Message(String senderLogin, String recipientLogin, String text, LocalDateTime dateTime) {
-        this.senderLogin = senderLogin;
-        this.recipientLogin = recipientLogin;
-        this.text = text;
-        this.dateTime = dateTime;
-    }
-
-    private Message(Long id, String senderLogin, String recipientLogin, String text, LocalDateTime dateTime, User author, User user) {
-        this.id = id;
-        this.senderLogin = senderLogin;
-        this.recipientLogin = recipientLogin;
-        this.text = text;
-        this.dateTime = dateTime;
-        this.author = author;
-        this.user = user;
+        this.sender = user;
+        this.recipient = author;
     }
 
     public Long getId() {
@@ -44,22 +25,6 @@ public class Message {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getSenderLogin() {
-        return senderLogin;
-    }
-
-    public void setSenderLogin(String senderLogin) {
-        this.senderLogin = senderLogin;
-    }
-
-    public String getRecipientLogin() {
-        return recipientLogin;
-    }
-
-    public void setRecipientLogin(String recipientLogin) {
-        this.recipientLogin = recipientLogin;
     }
 
     public String getText() {
@@ -78,20 +43,20 @@ public class Message {
         this.dateTime = dateTime;
     }
 
-    public User getAuthor() {
-        return author;
+    public User getSender() {
+        return sender;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
+    public void setSender(User sender) {
+        this.sender = sender;
     }
 
-    public User getUser() {
-        return user;
+    public User getRecipient() {
+        return recipient;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setRecipient(User recipient) {
+        this.recipient = recipient;
     }
 
     @Override
@@ -99,39 +64,35 @@ public class Message {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Message message = (Message) o;
-        return Objects.equals(senderLogin, message.senderLogin)
-                && Objects.equals(id, message.id)
-                && Objects.equals(recipientLogin, message.recipientLogin)
+        return Objects.equals(id, message.id)
                 && Objects.equals(text, message.text)
                 && Objects.equals(dateTime, message.dateTime)
-                && Objects.equals(author, message.author)
-                && Objects.equals(user, message.user);
+                && Objects.equals(sender, message.sender)
+                && Objects.equals(recipient, message.recipient);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(senderLogin, recipientLogin, text, dateTime, id, author, user);
+        return Objects.hash(id, text, dateTime, sender, recipient);
     }
 
     @Override
     public String toString() {
         return "Message{" +
                 "id=" + id +
-                ", senderLogin='" + senderLogin + '\'' +
-                ", recipientLogin='" + recipientLogin + '\'' +
                 ", text='" + text + '\'' +
                 ", dateTime=" + dateTime +
+                ", user=" + sender +
+                ", author=" + recipient +
                 '}';
     }
 
     public static class Builder {
         private Long id;
-        private String senderLogin;
-        private String recipientLogin;
         private String text;
         private LocalDateTime dateTime;
-        private User author;
-        private User user;
+        private User sender;
+        private User recipient;
 
         private Builder() {
         }
@@ -145,16 +106,6 @@ public class Message {
             return this;
         }
 
-        public Builder setSenderLogin(String senderLogin) {
-            this.senderLogin = senderLogin;
-            return this;
-        }
-
-        public Builder setRecipientLogin(String recipientLogin) {
-            this.recipientLogin = recipientLogin;
-            return this;
-        }
-
         public Builder setText(String text) {
             this.text = text;
             return this;
@@ -165,18 +116,18 @@ public class Message {
             return this;
         }
 
-        public Builder setAuthor(User author) {
-            this.author = author;
+        public Builder setSender(User sender) {
+            this.sender = sender;
             return this;
         }
 
-        public Builder setUser(User user) {
-            this.user = user;
+        public Builder setRecipient(User recipient) {
+            this.recipient = recipient;
             return this;
         }
 
         public Message build() {
-            return new Message(id, senderLogin, recipientLogin, text, dateTime, author, user);
+            return new Message(id, text, dateTime, sender, recipient);
         }
     }
 

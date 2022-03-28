@@ -1,6 +1,8 @@
 package by.it.academy.MK_JD2_88_2.hw1.storage.sql;
 
 import by.it.academy.MK_JD2_88_2.hw1.dto.Message;
+import by.it.academy.MK_JD2_88_2.hw1.dto.User;
+import by.it.academy.MK_JD2_88_2.hw1.storage.api.IUserStorage;
 import by.it.academy.MK_JD2_88_2.hw1.storage.sql.api.DBInitializer;
 import by.it.academy.MK_JD2_88_2.hw1.storage.api.IMessageStorage;
 
@@ -13,17 +15,19 @@ import java.util.List;
 public class DBMessageStorage implements IMessageStorage {
 
     private static final IMessageStorage instance = new DBMessageStorage();
+    private final IUserStorage userStorage;
     private final DataSource ds;
 
 
     private DBMessageStorage() {
         this.ds = DBInitializer.getInstance().getDataSource();
+        this.userStorage = DBUserStorage.getInstance();
     }
 
     @Override
     public void add(Message message) {
-        String senderLogin = message.getSenderLogin();
-        String recipientLogin = message.getRecipientLogin();
+        String senderLogin = message.getSender().getLogin();
+        String recipientLogin = message.getRecipient().getLogin();
         String text = message.getText();
         LocalDateTime dateTime = message.getDateTime();
         String sql = "INSERT INTO app.messages (sender_login, recipient_login, text, data_time) VALUES (?, ?, ?, ?)";
@@ -66,7 +70,14 @@ public class DBMessageStorage implements IMessageStorage {
                 String recipientLogin = rs.getString("recipient_login");
                 String text = rs.getString("text");
                 LocalDateTime dateTime = rs.getTimestamp("data_time").toLocalDateTime();
-                Message message = new Message(senderLogin, recipientLogin, text, dateTime);
+                User sender = this.userStorage.get(senderLogin);
+                User recipient = this.userStorage.get(recipientLogin);
+                Message message = Message.Builder.createBuilder()
+                        .setSender(sender)
+                        .setRecipient(recipient)
+                        .setText(text)
+                        .setDateTime(dateTime)
+                        .build();
                 messages.add(message);
             }
         } catch (SQLException e) {
