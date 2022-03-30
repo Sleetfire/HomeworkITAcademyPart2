@@ -3,8 +3,8 @@ package by.it.academy.MK_JD2_88_2.hw1.storage.hibernate;
 import by.it.academy.MK_JD2_88_2.hw1.dto.AuditUser;
 import by.it.academy.MK_JD2_88_2.hw1.dto.Pageable;
 import by.it.academy.MK_JD2_88_2.hw1.dto.User;
-import by.it.academy.MK_JD2_88_2.hw1.storage.api.IAuditUserStorage;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.HibernateDBInitializer;
+import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.IHibernateAuditStorage;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.adapter.AuditUserAdapter;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.adapter.UserAdapter;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.adapter.api.IEntityDTOAdapter;
@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HibernateAuditUserStorage implements IAuditUserStorage {
+public class HibernateAuditUserStorage implements IHibernateAuditStorage {
 
-    private static IAuditUserStorage instance = new HibernateAuditUserStorage();
+    private static final IHibernateAuditStorage instance = new HibernateAuditUserStorage();
     private final HibernateDBInitializer hibernateDBInitializer;
     private final IEntityDTOAdapter<AuditUserEntity, AuditUser> auditUserAdapter;
 
@@ -39,6 +39,15 @@ public class HibernateAuditUserStorage implements IAuditUserStorage {
         entityManager.persist(this.auditUserAdapter.dtoToEntity(auditUser));
         entityManager.getTransaction().commit();
         entityManager.close();
+    }
+
+    @Override
+    public void create(AuditUser auditUser, EntityManager entityManager) {
+        if (entityManager == null) {
+            create(auditUser);
+        } else {
+            entityManager.persist(this.auditUserAdapter.dtoToEntity(auditUser));
+        }
     }
 
     @Override
@@ -61,19 +70,21 @@ public class HibernateAuditUserStorage implements IAuditUserStorage {
         Root<AuditUserEntity> root = query.from(AuditUserEntity.class);
         query.select(root);
 
+        entityManager.getTransaction().begin();
         List<AuditUserEntity> auditsEntities = entityManager.createQuery(query)
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
         List<AuditUser> audits = new ArrayList<>(auditsEntities.size());
         auditsEntities.forEach(auditUserEntity -> audits.add(this.auditUserAdapter.entityToDTO(auditUserEntity)));
+        entityManager.getTransaction().commit();
         entityManager.close();
         return audits;
     }
 
     public void deleteByUser(User user) {
-        UserEntity userEntity = new UserAdapter().dtoToEntity(user);
         EntityManager entityManager = hibernateDBInitializer.getManager();
+        UserEntity userEntity = new UserAdapter().dtoToEntity(user);
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaDelete<AuditUserEntity> criteriaDelete = cb.createCriteriaDelete(AuditUserEntity.class);
         Root<AuditUserEntity> root = criteriaDelete.from(AuditUserEntity.class);
@@ -86,7 +97,24 @@ public class HibernateAuditUserStorage implements IAuditUserStorage {
         entityManager.close();
     }
 
-    public static IAuditUserStorage getInstance() {
+    @Override
+    public void deleteByUser(User user, EntityManager entityManager) {
+        if (entityManager == null) {
+            deleteByUser(user);
+        } else {
+            UserEntity userEntity = new UserAdapter().dtoToEntity(user);
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaDelete<AuditUserEntity> criteriaDelete = cb.createCriteriaDelete(AuditUserEntity.class);
+            Root<AuditUserEntity> root = criteriaDelete.from(AuditUserEntity.class);
+            criteriaDelete.where(
+                    cb.equal(root.get("user"), userEntity)
+            );
+            entityManager.createQuery(criteriaDelete).executeUpdate();
+        }
+
+    }
+
+    public static IHibernateAuditStorage getInstance() {
         return instance;
     }
 }

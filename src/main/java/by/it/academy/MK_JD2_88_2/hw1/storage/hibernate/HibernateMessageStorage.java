@@ -1,11 +1,14 @@
 package by.it.academy.MK_JD2_88_2.hw1.storage.hibernate;
 
 import by.it.academy.MK_JD2_88_2.hw1.dto.Message;
-
-import by.it.academy.MK_JD2_88_2.hw1.storage.api.IMessageStorage;
+import by.it.academy.MK_JD2_88_2.hw1.dto.User;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.HibernateDBInitializer;
+import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.IHibernateMessageStorage;
+import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.IHibernateUserStorage;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.adapter.MessageAdapter;
+import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.adapter.UserAdapter;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.entity.MessageEntity;
+import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.entity.UserEntity;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -15,9 +18,9 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HibernateMessageStorage implements IMessageStorage {
+public class HibernateMessageStorage implements IHibernateMessageStorage {
 
-    private static IMessageStorage instance = new HibernateMessageStorage();
+    private static final IHibernateMessageStorage instance = new HibernateMessageStorage();
     private final HibernateDBInitializer dbInitializer;
     private final MessageAdapter messageAdapter;
 
@@ -36,6 +39,15 @@ public class HibernateMessageStorage implements IMessageStorage {
     }
 
     @Override
+    public void add(Message message, EntityManager entityManager) {
+        if (entityManager == null) {
+            add(message);
+        } else {
+            entityManager.persist(this.messageAdapter.dtoToEntity(message));
+        }
+    }
+
+    @Override
     public List<Message> getAll() {
         return getByLogin(null, null);
     }
@@ -47,7 +59,7 @@ public class HibernateMessageStorage implements IMessageStorage {
 
     @Override
     public List<Message> getByRecipientLogin(String login) {
-      return getByLogin(login, "recipient");
+        return getByLogin(login, "recipient");
     }
 
     @Override
@@ -57,7 +69,9 @@ public class HibernateMessageStorage implements IMessageStorage {
         CriteriaQuery<Long> query = cb.createQuery(Long.class);
         Root<MessageEntity> root = query.from(MessageEntity.class);
         query.select(cb.count(root));
+        entityManager.getTransaction().begin();
         Long count = entityManager.createQuery(query).getSingleResult();
+        entityManager.getTransaction().commit();
         entityManager.close();
         return Math.toIntExact(count);
     }
@@ -77,6 +91,22 @@ public class HibernateMessageStorage implements IMessageStorage {
         entityManager.close();
     }
 
+    @Override
+    public void delete(User user, EntityManager entityManager) {
+        if (entityManager == null) {
+            delete(user.getLogin());
+        } else {
+            UserEntity userEntity = new UserAdapter().dtoToEntity(user);
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaDelete<MessageEntity> criteriaDelete = cb.createCriteriaDelete(MessageEntity.class);
+            Root<MessageEntity> root = criteriaDelete.from(MessageEntity.class);
+            criteriaDelete = criteriaDelete.where(
+                    cb.equal(root.get("sender"), userEntity)
+            );
+            entityManager.createQuery(criteriaDelete).executeUpdate();
+        }
+    }
+
     List<Message> getByLogin(String login, String fieldName) {
         EntityManager entityManager = this.dbInitializer.getManager();
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -91,14 +121,17 @@ public class HibernateMessageStorage implements IMessageStorage {
             );
         }
 
+        entityManager.getTransaction().begin();
         List<MessageEntity> messageEntities = entityManager.createQuery(query).getResultList();
+        entityManager.getTransaction().commit();
+
         List<Message> messages = new ArrayList<>(messageEntities.size());
         messageEntities.forEach(messageEntity -> messages.add(this.messageAdapter.entityToDTO(messageEntity)));
         entityManager.close();
         return messages;
     }
 
-    public static IMessageStorage getInstance() {
+    public static IHibernateMessageStorage getInstance() {
         return instance;
     }
 }

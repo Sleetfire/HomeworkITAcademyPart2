@@ -22,7 +22,7 @@ public class AuditUserEntity {
     private UserEntity author;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn
     private UserEntity user;
 
     public AuditUserEntity(Long id, LocalDateTime dtCreate, String text, UserEntity author, UserEntity user) {

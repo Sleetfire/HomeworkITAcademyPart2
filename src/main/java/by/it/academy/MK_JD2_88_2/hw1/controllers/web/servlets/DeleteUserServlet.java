@@ -32,7 +32,6 @@ public class DeleteUserServlet extends HttpServlet {
         String login = user.getLogin();
 
         this.userService.deleteByLogin(login);
-        this.messageService.deleteByUserLogin(login);
         session.removeAttribute("user");
         resp.sendRedirect( req.getContextPath() + "/leave");
     }
