@@ -1,6 +1,7 @@
 package by.it.academy.MK_JD2_88_2.hw1.dto;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class AuditUser {
 
@@ -36,6 +37,23 @@ public class AuditUser {
 
     public User getUser() {
         return user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AuditUser auditUser = (AuditUser) o;
+        return Objects.equals(id, auditUser.id)
+                && Objects.equals(dtCreate, auditUser.dtCreate)
+                && Objects.equals(text, auditUser.text)
+                && Objects.equals(author, auditUser.author)
+                && Objects.equals(user, auditUser.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, dtCreate, text, author, user);
     }
 
     @Override

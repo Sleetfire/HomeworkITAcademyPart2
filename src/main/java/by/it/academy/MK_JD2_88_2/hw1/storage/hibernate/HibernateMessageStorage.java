@@ -4,17 +4,13 @@ import by.it.academy.MK_JD2_88_2.hw1.dto.Message;
 import by.it.academy.MK_JD2_88_2.hw1.dto.User;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.HibernateDBInitializer;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.IHibernateMessageStorage;
-import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.IHibernateUserStorage;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.adapter.MessageAdapter;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.adapter.UserAdapter;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.entity.MessageEntity;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.entity.UserEntity;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,8 +78,10 @@ public class HibernateMessageStorage implements IHibernateMessageStorage {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaDelete<MessageEntity> criteriaDelete = cb.createCriteriaDelete(MessageEntity.class);
         Root<MessageEntity> root = criteriaDelete.from(MessageEntity.class);
+        Predicate senderPredicate = cb.equal(root.get("sender").get("login"), login);
+        Predicate recipientPredicate = cb.equal(root.get("recipient").get("login"), login);
         criteriaDelete.where(
-                cb.equal(root.get("sender").get("login"), login)
+                cb.or(senderPredicate, recipientPredicate)
         );
         entityManager.getTransaction().begin();
         entityManager.createQuery(criteriaDelete).executeUpdate();
@@ -100,8 +98,10 @@ public class HibernateMessageStorage implements IHibernateMessageStorage {
             CriteriaBuilder cb = entityManager.getCriteriaBuilder();
             CriteriaDelete<MessageEntity> criteriaDelete = cb.createCriteriaDelete(MessageEntity.class);
             Root<MessageEntity> root = criteriaDelete.from(MessageEntity.class);
+            Predicate senderPredicate = cb.equal(root.get("sender"), userEntity);
+            Predicate recipientPredicate = cb.equal(root.get("recipient"), userEntity);
             criteriaDelete = criteriaDelete.where(
-                    cb.equal(root.get("sender"), userEntity)
+                    cb.or(senderPredicate, recipientPredicate)
             );
             entityManager.createQuery(criteriaDelete).executeUpdate();
         }

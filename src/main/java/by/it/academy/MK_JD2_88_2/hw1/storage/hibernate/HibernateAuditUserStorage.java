@@ -20,7 +20,6 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class HibernateAuditUserStorage implements IHibernateAuditStorage {
 
     private static final IHibernateAuditStorage instance = new HibernateAuditUserStorage();
@@ -84,13 +83,7 @@ public class HibernateAuditUserStorage implements IHibernateAuditStorage {
 
     public void deleteByUser(User user) {
         EntityManager entityManager = hibernateDBInitializer.getManager();
-        UserEntity userEntity = new UserAdapter().dtoToEntity(user);
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaDelete<AuditUserEntity> criteriaDelete = cb.createCriteriaDelete(AuditUserEntity.class);
-        Root<AuditUserEntity> root = criteriaDelete.from(AuditUserEntity.class);
-        criteriaDelete.where(
-                cb.equal(root.get("user"), userEntity)
-        );
+        CriteriaDelete<AuditUserEntity> criteriaDelete = configureCriteriaDelete(user, entityManager);
         entityManager.getTransaction().begin();
         entityManager.createQuery(criteriaDelete).executeUpdate();
         entityManager.getTransaction().commit();
@@ -102,16 +95,20 @@ public class HibernateAuditUserStorage implements IHibernateAuditStorage {
         if (entityManager == null) {
             deleteByUser(user);
         } else {
-            UserEntity userEntity = new UserAdapter().dtoToEntity(user);
-            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-            CriteriaDelete<AuditUserEntity> criteriaDelete = cb.createCriteriaDelete(AuditUserEntity.class);
-            Root<AuditUserEntity> root = criteriaDelete.from(AuditUserEntity.class);
-            criteriaDelete.where(
-                    cb.equal(root.get("user"), userEntity)
-            );
+            CriteriaDelete<AuditUserEntity> criteriaDelete = configureCriteriaDelete(user, entityManager);
             entityManager.createQuery(criteriaDelete).executeUpdate();
         }
+    }
 
+    private CriteriaDelete<AuditUserEntity> configureCriteriaDelete(User user, EntityManager entityManager) {
+        UserEntity userEntity = new UserAdapter().dtoToEntity(user);
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaDelete<AuditUserEntity> criteriaDelete = cb.createCriteriaDelete(AuditUserEntity.class);
+        Root<AuditUserEntity> root = criteriaDelete.from(AuditUserEntity.class);
+        criteriaDelete.where(
+                cb.equal(root.get("user"), userEntity)
+        );
+        return criteriaDelete;
     }
 
     public static IHibernateAuditStorage getInstance() {

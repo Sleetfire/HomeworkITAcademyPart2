@@ -7,7 +7,6 @@ import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.HibernateDBInitialize
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.IHibernateAuditStorage;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.IHibernateMessageStorage;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.IHibernateUserStorage;
-import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.adapter.UserAdapter;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
