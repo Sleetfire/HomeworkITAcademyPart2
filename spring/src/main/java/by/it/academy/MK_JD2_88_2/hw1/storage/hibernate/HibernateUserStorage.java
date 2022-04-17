@@ -1,6 +1,7 @@
 package by.it.academy.MK_JD2_88_2.hw1.storage.hibernate;
 
 import by.it.academy.MK_JD2_88_2.hw1.dto.User;
+import by.it.academy.MK_JD2_88_2.hw1.storage.api.exceptions.EssenceNotFound;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.HibernateDBInitializer;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.IHibernateUserStorage;
 import by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api.adapter.UserAdapter;
@@ -10,10 +11,8 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,6 +132,29 @@ public class HibernateUserStorage implements IHibernateUserStorage {
 
     @Override
     public void update(User user, String login) {
+        User dbUser = this.get(login);
+        LocalDateTime oldUpdate = dbUser.getUpdateDateTime();
+        Long id = dbUser.getId();
 
+        EntityManager entityManager = this.hibernateDBInitializer.getManager();
+        entityManager.getTransaction().begin();
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaUpdate<UserEntity> criteriaUpdate= cb.createCriteriaUpdate(UserEntity.class);
+        Root<UserEntity> root = criteriaUpdate.from(UserEntity.class);
+        Predicate predicate1 = cb.equal(root.get("id"), id);
+        Predicate predicate2 = cb.equal(root.get("updateDateTime"), oldUpdate);
+        Predicate predicate3 = cb.and(predicate1, predicate2);
+        criteriaUpdate.set("login", user.getLogin() != null ? user.getLogin() : dbUser.getLogin());
+        criteriaUpdate.set("password", user.getPassword() != null ? user.getPassword() : dbUser.getPassword());
+        criteriaUpdate.set("name", user.getName() != null ? user.getName() : dbUser.getName());
+        criteriaUpdate.set("birthday", user.getBirthday() != null ? user.getBirthday() : dbUser.getBirthday());
+        criteriaUpdate.set("updateDateTime", LocalDateTime.now());
+        criteriaUpdate.where(predicate3);
+        int update = entityManager.createQuery(criteriaUpdate).executeUpdate();
+        if (update == 0) {
+            throw new EssenceNotFound("Не удалось обновить пользователя с id = " + id);
+        }
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 }

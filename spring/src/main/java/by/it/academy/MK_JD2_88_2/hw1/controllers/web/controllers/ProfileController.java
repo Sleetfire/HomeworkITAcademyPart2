@@ -8,6 +8,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/profile")
@@ -30,7 +31,7 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.GET)
-    public String index() {
+    public String indexUpdate() {
         return "update";
     }
 
@@ -38,7 +39,7 @@ public class ProfileController {
     @ResponseBody
     public String update(@SessionAttribute(name = "user", required = false) User user, Model model,
                          @RequestBody(required = false) MultiValueMap<String, String> formParams) {
-        LocalDate birthday = LocalDate.parse(formParams.getFirst("birthday"));
+        LocalDate birthday = LocalDate.parse(Objects.requireNonNull(formParams.getFirst("birthday")));
         User updateUser = User.Builder.createBuilder()
                 .setLogin(formParams.getFirst("login"))
                 .setPassword(formParams.getFirst("password"))
@@ -52,7 +53,8 @@ public class ProfileController {
         return "redirect:/profile";
     }
 
-    @RequestMapping(name = "/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @ResponseBody
     public String delete(@SessionAttribute(name = "user", required = false) User user){
         String login = user.getLogin();
         this.userService.deleteByLogin(login);

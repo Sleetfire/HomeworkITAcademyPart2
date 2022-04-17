@@ -1,9 +1,6 @@
 package by.it.academy.MK_JD2_88_2.hw1.storage.sql.api;
 
-import by.it.academy.MK_JD2_88_2.hw1.storage.api.IAuditUserStorage;
-import by.it.academy.MK_JD2_88_2.hw1.storage.api.IFactoryStorage;
-import by.it.academy.MK_JD2_88_2.hw1.storage.api.IMessageStorage;
-import by.it.academy.MK_JD2_88_2.hw1.storage.api.IUserStorage;
+import by.it.academy.MK_JD2_88_2.hw1.storage.api.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
@@ -35,5 +32,10 @@ public class SQLFactoryStorage implements IFactoryStorage {
     @Override
     public IAuditUserStorage getAuditUserStorage() {
         return dbAuditUserStorage;
+    }
+
+    @Override
+    public boolean isSupportedType(StorageType storageType) {
+        return StorageType.SQL.equals(storageType);
     }
 }

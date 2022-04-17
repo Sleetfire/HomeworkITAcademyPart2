@@ -15,7 +15,7 @@ public class MessageMapper implements RowMapper<Message> {
         String senderLogin = rs.getString("sender_login");
         String recipientLogin = rs.getString("recipient_login");
         String text = rs.getString("text");
-        LocalDateTime dateTime = rs.getObject("data_time", LocalDateTime.class);
+        LocalDateTime dateTime = rs.getObject("date_time", LocalDateTime.class);
         User sender = new User();
         User recipient = new User();
         sender.setLogin(senderLogin);

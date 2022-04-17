@@ -1,9 +1,6 @@
 package by.it.academy.MK_JD2_88_2.hw1.storage.hibernate.api;
 
-import by.it.academy.MK_JD2_88_2.hw1.storage.api.IAuditUserStorage;
-import by.it.academy.MK_JD2_88_2.hw1.storage.api.IFactoryStorage;
-import by.it.academy.MK_JD2_88_2.hw1.storage.api.IMessageStorage;
-import by.it.academy.MK_JD2_88_2.hw1.storage.api.IUserStorage;
+import by.it.academy.MK_JD2_88_2.hw1.storage.api.*;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -34,5 +31,10 @@ public class HibernateFactoryStorage implements IFactoryStorage {
     @Override
     public IAuditUserStorage getAuditUserStorage() {
         return hibernateAuditStorage;
+    }
+
+    @Override
+    public boolean isSupportedType(StorageType storageType) {
+        return StorageType.HIBERNATE.equals(storageType);
     }
 }

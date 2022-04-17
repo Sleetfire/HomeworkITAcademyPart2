@@ -33,8 +33,8 @@ public class DBMessageStorage implements IMessageStorage {
         paramMap.addValue("sender_login", senderLogin);
         paramMap.addValue("recipient_login", recipientLogin);
         paramMap.addValue("text", text);
-        paramMap.addValue("data_time", dateTime);
-        String sql = "insert into app.messages (sender_login, recipient_login, text, data_time) values (:sender_login, :recipient_login, :text, :data_time)";
+        paramMap.addValue("date_time", dateTime);
+        String sql = "insert into app.messages (sender_login, recipient_login, text, date_time) values (:sender_login, :recipient_login, :text, :date_time)";
         try {
             this.namedParameterJdbcTemplate.update(sql, paramMap);
         } catch (Exception e) {

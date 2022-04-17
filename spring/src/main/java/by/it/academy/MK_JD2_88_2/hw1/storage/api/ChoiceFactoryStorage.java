@@ -2,30 +2,37 @@ package by.it.academy.MK_JD2_88_2.hw1.storage.api;
 
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
+import java.util.List;
 
 @Component
-public class ChoiceFactoryStorage implements IFactoryStorage {
+public class ChoiceFactoryStorage {
 
-    private IFactoryStorage factoryStorage;
+    private List<IFactoryStorage> factoryStorages;
+    private StorageType selectedStorageType;
 
-    public ChoiceFactoryStorage(String type, Map<String, IFactoryStorage> factoryStorageMap) {
-        this.factoryStorage = factoryStorageMap.get(type);
+    public ChoiceFactoryStorage(List<IFactoryStorage> factoryStorages, String storageType) {
+        this.factoryStorages = factoryStorages;
+        this.selectedStorageType = StorageType.valueOf(storageType);
     }
 
-    @Override
     public IUserStorage getUserStorage() {
-        return this.factoryStorage.getUserStorage();
+        return getFactoryStorage(this.selectedStorageType).getUserStorage();
     }
 
-    @Override
     public IMessageStorage getMessageStorage() {
-        return this.factoryStorage.getMessageStorage();
+        return getFactoryStorage(this.selectedStorageType).getMessageStorage();
     }
 
-    @Override
-    public IAuditUserStorage getAuditUserStorage() {
-        return this.factoryStorage.getAuditUserStorage();
+    public IAuditUserStorage getAuditUserStorage () {
+        return getFactoryStorage(this.selectedStorageType).getAuditUserStorage();
     }
 
+    private IFactoryStorage getFactoryStorage(StorageType storageType) {
+        for (IFactoryStorage storage : this.factoryStorages) {
+            if (storage.isSupportedType(storageType)) {
+                return storage;
+            }
+        }
+        return null;
+    }
 }

@@ -8,4 +8,6 @@ public interface IFactoryStorage {
 
     IAuditUserStorage getAuditUserStorage();
 
+    boolean isSupportedType(StorageType storageType);
+
 }

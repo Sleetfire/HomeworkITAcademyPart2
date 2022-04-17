@@ -2,7 +2,7 @@ package by.it.academy.MK_JD2_88_2.hw1.service;
 
 import by.it.academy.MK_JD2_88_2.hw1.dto.User;
 import by.it.academy.MK_JD2_88_2.hw1.service.api.IUserService;
-import by.it.academy.MK_JD2_88_2.hw1.storage.api.IFactoryStorage;
+import by.it.academy.MK_JD2_88_2.hw1.storage.api.ChoiceFactoryStorage;
 import by.it.academy.MK_JD2_88_2.hw1.storage.api.IUserStorage;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ public class UserService implements IUserService {
 
     private final IUserStorage choiceFactoryStorage;
 
-    private UserService(IFactoryStorage choiceFactoryStorage) {
+    private UserService(ChoiceFactoryStorage choiceFactoryStorage) {
         this.choiceFactoryStorage = choiceFactoryStorage.getUserStorage();
     }
 

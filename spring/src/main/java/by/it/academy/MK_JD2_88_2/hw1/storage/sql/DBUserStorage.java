@@ -124,10 +124,10 @@ public class DBUserStorage implements IUserStorage {
         try {
             int update = this.namedParameterJdbcTemplate.update(sql, paramMap);
             if (update == 0) {
-                throw new EssenceNotFound();
+                throw new EssenceNotFound("Не удалось обновить пользователя с id = " + id);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Не удалось обновить пользователя с id = " + id);
+            throw new RuntimeException("Ошибка выполнения sql", e);
         }
     }
 }

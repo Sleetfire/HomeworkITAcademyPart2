@@ -2,7 +2,7 @@ package by.it.academy.MK_JD2_88_2.hw1.service;
 
 import by.it.academy.MK_JD2_88_2.hw1.dto.Message;
 import by.it.academy.MK_JD2_88_2.hw1.service.api.IMessageService;
-import by.it.academy.MK_JD2_88_2.hw1.storage.api.IFactoryStorage;
+import by.it.academy.MK_JD2_88_2.hw1.storage.api.ChoiceFactoryStorage;
 import by.it.academy.MK_JD2_88_2.hw1.storage.api.IMessageStorage;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ public class MessageService implements IMessageService {
 
     private IMessageStorage choiceFactoryStorage;
 
-    private MessageService(IFactoryStorage choiceFactoryStorage) {
+    private MessageService(ChoiceFactoryStorage choiceFactoryStorage) {
          this.choiceFactoryStorage = choiceFactoryStorage.getMessageStorage();
     }
 
