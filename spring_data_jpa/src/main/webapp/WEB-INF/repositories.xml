@@ -7,6 +7,6 @@
     http://www.springframework.org/schema/data/jpa
     https://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-    <repositories base-package="by.it.academy.MK_JD2_88_2.hw1.repository" />
+    <repositories base-package="by.it.academy.MK_JD2_88_2.hw1.repository.api" />
 
 </beans:beans>

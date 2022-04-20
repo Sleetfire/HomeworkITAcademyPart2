@@ -1,6 +1,7 @@
 package by.it.academy.MK_JD2_88_2.hw1.controllers.web.controllers;
 
 import by.it.academy.MK_JD2_88_2.hw1.service.api.IUserService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,7 @@ public class SignInController {
 
     private final IUserService userService;
 
-    public SignInController(IUserService userService) {
+    public SignInController(@Qualifier("userDecoratorService") IUserService userService) {
         this.userService = userService;
     }
 

@@ -2,12 +2,14 @@ package by.it.academy.MK_JD2_88_2.hw1.service;
 
 import by.it.academy.MK_JD2_88_2.hw1.model.Message;
 import by.it.academy.MK_JD2_88_2.hw1.service.api.IMessageService;
-import by.it.academy.MK_JD2_88_2.hw1.repository.IMessageRepository;
+import by.it.academy.MK_JD2_88_2.hw1.repository.api.IMessageRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Service("messageService")
+@Transactional(readOnly = true)
 public class MessageService implements IMessageService {
 
     private IMessageRepository messageRepository;
@@ -17,6 +19,7 @@ public class MessageService implements IMessageService {
     }
 
     @Override
+    @Transactional
     public void create(Message message) {
        this.messageRepository.save(message);
     }
@@ -42,6 +45,7 @@ public class MessageService implements IMessageService {
     }
 
     @Override
+    @Transactional
     public void deleteByUserLogin(String login) {
         this.messageRepository.deleteBySenderLogin(login);
     }

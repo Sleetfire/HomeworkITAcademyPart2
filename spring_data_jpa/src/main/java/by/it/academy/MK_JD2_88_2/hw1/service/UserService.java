@@ -2,13 +2,15 @@ package by.it.academy.MK_JD2_88_2.hw1.service;
 
 import by.it.academy.MK_JD2_88_2.hw1.model.User;
 import by.it.academy.MK_JD2_88_2.hw1.service.api.IUserService;
-import by.it.academy.MK_JD2_88_2.hw1.repository.IUserRepository;
+import by.it.academy.MK_JD2_88_2.hw1.repository.api.IUserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Service("userService")
+@Transactional(readOnly = true)
 public class UserService implements IUserService {
 
     private final IUserRepository userRepository;
@@ -18,6 +20,7 @@ public class UserService implements IUserService {
     }
 
     @Override
+    @Transactional
     public void create(User user) {
         this.userRepository.save(user);
     }
@@ -38,6 +41,7 @@ public class UserService implements IUserService {
     }
 
     @Override
+    @Transactional
     public void deleteByLogin(String login) {
         this.userRepository.deleteByLogin(login);
     }
@@ -59,6 +63,7 @@ public class UserService implements IUserService {
     }
 
     @Override
+    @Transactional
     public void update(User user, String login, LocalDateTime oldUpdate) {
         this.userRepository.update(user, login, oldUpdate);
     }

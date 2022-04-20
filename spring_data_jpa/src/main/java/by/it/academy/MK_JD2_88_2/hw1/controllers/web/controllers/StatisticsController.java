@@ -3,6 +3,7 @@ package by.it.academy.MK_JD2_88_2.hw1.controllers.web.controllers;
 import by.it.academy.MK_JD2_88_2.hw1.service.api.IMessageService;
 import by.it.academy.MK_JD2_88_2.hw1.service.api.IUserService;
 import by.it.academy.MK_JD2_88_2.hw1.service.session_counter.api.ISessionCounterService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,7 @@ public class StatisticsController {
     private final IMessageService messageService;
     private final ISessionCounterService sessionCounter;
 
-    public StatisticsController(IUserService userService, IMessageService messageService,
+    public StatisticsController(@Qualifier("userDecoratorService") IUserService userService, IMessageService messageService,
                                 ISessionCounterService sessionCounter) {
         this.userService = userService;
         this.messageService = messageService;

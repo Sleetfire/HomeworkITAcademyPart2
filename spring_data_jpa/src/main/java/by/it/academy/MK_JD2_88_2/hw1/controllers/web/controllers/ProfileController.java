@@ -2,6 +2,7 @@ package by.it.academy.MK_JD2_88_2.hw1.controllers.web.controllers;
 
 import by.it.academy.MK_JD2_88_2.hw1.model.User;
 import by.it.academy.MK_JD2_88_2.hw1.service.api.IUserService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
@@ -17,7 +18,7 @@ public class ProfileController {
 
     private final IUserService userService;
 
-    public ProfileController(IUserService userService) {
+    public ProfileController(@Qualifier("userDecoratorService") IUserService userService) {
         this.userService = userService;
     }
 

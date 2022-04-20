@@ -2,6 +2,7 @@ package by.it.academy.MK_JD2_88_2.hw1.controllers.web.controllers;
 
 import by.it.academy.MK_JD2_88_2.hw1.model.User;
 import by.it.academy.MK_JD2_88_2.hw1.service.api.IUserService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 public class SignUpController {
 
     private final IUserService userService;
-    public SignUpController(IUserService userService) {
+    public SignUpController(@Qualifier("userDecoratorService") IUserService userService) {
         this.userService = userService;
     }
 

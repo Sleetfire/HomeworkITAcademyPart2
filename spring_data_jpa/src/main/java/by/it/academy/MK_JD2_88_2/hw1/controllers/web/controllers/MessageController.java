@@ -4,6 +4,7 @@ import by.it.academy.MK_JD2_88_2.hw1.model.Message;
 import by.it.academy.MK_JD2_88_2.hw1.model.User;
 import by.it.academy.MK_JD2_88_2.hw1.service.api.IMessageService;
 import by.it.academy.MK_JD2_88_2.hw1.service.api.IUserService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ public class MessageController{
     private final IMessageService messageService;
     private final IUserService userService;
 
-    public MessageController(IMessageService messageService, IUserService userService) {
+    public MessageController(IMessageService messageService, @Qualifier("userDecoratorService") IUserService userService) {
         this.messageService = messageService;
         this.userService = userService;
     }
