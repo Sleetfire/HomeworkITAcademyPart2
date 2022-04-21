@@ -1,14 +1,15 @@
 package by.it.academy.MK_JD2_88_2.hw1.service;
 
 import by.it.academy.MK_JD2_88_2.hw1.model.AuditUser;
-import by.it.academy.MK_JD2_88_2.hw1.model.User;
 import by.it.academy.MK_JD2_88_2.hw1.repository.api.IAuditUserRepository;
 import by.it.academy.MK_JD2_88_2.hw1.service.api.IAuditUserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class AuditUserService implements IAuditUserService {
 
     private IAuditUserRepository auditUserRepository;
@@ -18,6 +19,7 @@ public class AuditUserService implements IAuditUserService {
     }
 
     @Override
+    @Transactional
     public void create(AuditUser auditUser) {
         this.auditUserRepository.save(auditUser);
     }
@@ -28,7 +30,8 @@ public class AuditUserService implements IAuditUserService {
     }
 
     @Override
-    public void deleteByUser(User user) {
-        this.auditUserRepository.deleteAuditUserByUser(user);
+    @Transactional
+    public void deleteByUserLogin(String login) {
+        this.auditUserRepository.deleteByUserLogin(login);
     }
 }

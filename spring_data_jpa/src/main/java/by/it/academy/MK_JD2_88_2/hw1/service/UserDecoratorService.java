@@ -31,7 +31,7 @@ public class UserDecoratorService implements IUserService {
         this.userService.create(user);
         AuditUser auditUser = AuditUser.Builder.createBuilder()
                 .setUser(user)
-                .setAuthor(user)
+                .setAuthor(null)
                 .setDtCreate(LocalDateTime.now())
                 .setText("Регистрация")
                 .build();
@@ -56,9 +56,8 @@ public class UserDecoratorService implements IUserService {
     @Override
     @Transactional
     public void deleteByLogin(String login) {
+        this.auditUserService.deleteByUserLogin(login);
         this.messageService.deleteByUserLogin(login);
-        User user = this.userService.getByLogin(login);
-        this.auditUserService.deleteByUser(user);
         this.userService.deleteByLogin(login);
     }
 
@@ -73,6 +72,7 @@ public class UserDecoratorService implements IUserService {
     }
 
     @Override
+    @Transactional
     public void update(User user, String login, LocalDateTime oldUpdate) {
         this.userService.update(user, login, oldUpdate);
     }

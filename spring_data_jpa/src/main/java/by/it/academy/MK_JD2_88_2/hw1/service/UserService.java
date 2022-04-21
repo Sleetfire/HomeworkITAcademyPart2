@@ -20,7 +20,6 @@ public class UserService implements IUserService {
     }
 
     @Override
-    @Transactional
     public void create(User user) {
         this.userRepository.save(user);
     }

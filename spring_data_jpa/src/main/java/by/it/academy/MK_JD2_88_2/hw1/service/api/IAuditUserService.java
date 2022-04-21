@@ -11,6 +11,6 @@ public interface IAuditUserService{
 
     List<AuditUser> getAll();
 
-    void deleteByUser(User user);
+    void deleteByUserLogin(String login);
 
 }
