@@ -66,4 +66,9 @@ public class UserService implements IUserService {
     public void update(User user, String login, LocalDateTime oldUpdate) {
         this.userRepository.update(user, login, oldUpdate);
     }
+
+    @Override
+    public void delete(User user) {
+        this.userRepository.delete(user);
+    }
 }

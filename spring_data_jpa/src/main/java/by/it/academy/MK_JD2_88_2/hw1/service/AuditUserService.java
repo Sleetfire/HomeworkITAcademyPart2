@@ -1,6 +1,7 @@
 package by.it.academy.MK_JD2_88_2.hw1.service;
 
 import by.it.academy.MK_JD2_88_2.hw1.model.AuditUser;
+import by.it.academy.MK_JD2_88_2.hw1.model.User;
 import by.it.academy.MK_JD2_88_2.hw1.repository.api.IAuditUserRepository;
 import by.it.academy.MK_JD2_88_2.hw1.service.api.IAuditUserService;
 import org.springframework.stereotype.Service;
@@ -33,5 +34,11 @@ public class AuditUserService implements IAuditUserService {
     @Transactional
     public void deleteByUserLogin(String login) {
         this.auditUserRepository.deleteByUserLogin(login);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAuditUserByUser(User user) {
+        this.auditUserRepository.deleteAuditUserByUser(user);
     }
 }

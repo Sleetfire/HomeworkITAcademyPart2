@@ -56,9 +56,8 @@ public class UserDecoratorService implements IUserService {
     @Override
     @Transactional
     public void deleteByLogin(String login) {
-        this.auditUserService.deleteByUserLogin(login);
-        this.messageService.deleteByUserLogin(login);
-        this.userService.deleteByLogin(login);
+        User user = this.userService.getByLogin(login);
+        this.delete(user);
     }
 
     @Override
@@ -75,5 +74,12 @@ public class UserDecoratorService implements IUserService {
     @Transactional
     public void update(User user, String login, LocalDateTime oldUpdate) {
         this.userService.update(user, login, oldUpdate);
+    }
+
+    @Override
+    public void delete(User user) {
+        this.auditUserService.deleteAuditUserByUser(user);
+        this.messageService.deleteBySender(user);
+        this.userService.delete(user);
     }
 }

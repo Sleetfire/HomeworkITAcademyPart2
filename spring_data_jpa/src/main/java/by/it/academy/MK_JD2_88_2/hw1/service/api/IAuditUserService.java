@@ -13,4 +13,6 @@ public interface IAuditUserService{
 
     void deleteByUserLogin(String login);
 
+    void deleteAuditUserByUser(User user);
+
 }

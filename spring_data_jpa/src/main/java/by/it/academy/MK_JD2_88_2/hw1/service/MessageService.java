@@ -1,6 +1,7 @@
 package by.it.academy.MK_JD2_88_2.hw1.service;
 
 import by.it.academy.MK_JD2_88_2.hw1.model.Message;
+import by.it.academy.MK_JD2_88_2.hw1.model.User;
 import by.it.academy.MK_JD2_88_2.hw1.service.api.IMessageService;
 import by.it.academy.MK_JD2_88_2.hw1.repository.api.IMessageRepository;
 import org.springframework.stereotype.Service;
@@ -50,4 +51,9 @@ public class MessageService implements IMessageService {
         this.messageRepository.deleteBySenderLogin(login);
     }
 
+    @Override
+    @Transactional
+    public void deleteBySender(User user) {
+        this.messageRepository.deleteBySender(user);
+    }
 }

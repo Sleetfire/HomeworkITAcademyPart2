@@ -55,4 +55,6 @@ public interface IUserService {
 
     void update(User user, String login, LocalDateTime oldUpdate);
 
+    void delete(User user);
+
 }

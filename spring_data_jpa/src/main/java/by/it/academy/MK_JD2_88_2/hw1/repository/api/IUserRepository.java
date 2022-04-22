@@ -17,9 +17,8 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     @Modifying
     void deleteByLogin(String login);
 
-    @Modifying()
-    @Query("update User user set user = :user, user.updateDateTime = current_timestamp where user.login =:login and user.updateDateTime = :old_update")
-    void update(@Param("user") User user, @Param("login") String login, @Param("old_update") LocalDateTime oldUpdate);
-
+    @Modifying
+    @Query("update User user set user = :update_user, user.updateDateTime = current_timestamp where user.login =:login and user.updateDateTime = :old_update")
+    void update(@Param("update_user") User user, @Param("login") String login, @Param("old_update") LocalDateTime oldUpdate);
 
 }

@@ -1,6 +1,7 @@
 package by.it.academy.MK_JD2_88_2.hw1.repository.api;
 
 import by.it.academy.MK_JD2_88_2.hw1.model.Message;
+import by.it.academy.MK_JD2_88_2.hw1.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,5 +22,8 @@ public interface IMessageRepository extends JpaRepository<Message, Long> {
     @Modifying
     @Query("delete from Message m where m.sender.login = :login")
     void deleteBySenderLogin(@Param("login") String login);
+
+    @Modifying
+    void deleteBySender(User user);
 
 }
